@@ -1,0 +1,13 @@
+K,A
+K,B
+K,C
+K,D
+K,E
+K,F
+K,G
+V,A,B
+V,A,C
+V,A,D
+V,B,E
+V,C,F
+V,C,G
