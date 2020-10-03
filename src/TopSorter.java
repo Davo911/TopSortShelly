@@ -18,7 +18,8 @@ class Kante{
 class Graph{
     private Vector<Kante> graph = new Vector<Kante>();
 
-    public List sort(String elem) {
+    public List sort() {
+        //S ← Set of all nodes with no incoming edges
         Set<String> S = new LinkedHashSet<String>();
         for (int i = 0; i < graph.size(); i++) {
             String ktmp = graph.elementAt(i).getStart();
@@ -32,29 +33,38 @@ class Graph{
                 S.add(ktmp);
             }
         }
+        //L ← Empty list that will contain the sorted elements
         List<String> sorted = new ArrayList<>();
+
         String startK, endK;
+        //while S is non-empty do
         while(!S.isEmpty()){
             Iterator<String> it = S.iterator();
             startK = it.next();
 
+            //remove a node n from S
             S.remove(startK);
+            //add n to tail of L
             sorted.add(startK);
 
+            //for each node m with an edge e from n to m do
             for (int i = 0; i < graph.size(); i++) {
                 //vergleiche Start Knoten mit aktuellen
                 if (startK.equals(graph.elementAt(i).getStart())){
                     endK = graph.elementAt(i).getEnde();
+                    //remove edge e from the graph
                     graph.remove(i);
                     i--;
 
+                    //if m has no other incoming edges then
                     int hatInput = 0;
                     for (int j = 0; j < graph.size(); j++) {
-                        if(endK.equals(graph.elementAt(i).getEnde())){
+                        if(endK.equals(graph.elementAt(j).getEnde())){
                             hatInput = 1;
                         }
                     }
-                    if(hatInput==0){
+                    if(hatInput==1){
+                        //insert m into S
                         S.add(endK);
                     }
                 }
@@ -79,7 +89,6 @@ class Graph{
 public class TopSorter {
     ArrayList<ArrayList<String>> vList ;
     ArrayList<String> kList;
-
     public TopSorter(String path){
         vList = new ArrayList<ArrayList<String>>();
         kList = new ArrayList<>();
@@ -102,20 +111,21 @@ public class TopSorter {
                 }
                 line = br.readLine();
             }
-            System.out.println(kList.size());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    void buildGraph(){
-        System.out.println("BUILD THE GRAPH HERE");
+    List buildGraphAndSort(){
+        Graph g = new Graph(kList,vList);
+        return g.sort();
     }
     public static void main(String[] args){
         String file = "C:\\Users\\David\\IdeaProjects\\TopSortShelly\\src\\input.txt";
         TopSorter ts = new TopSorter(file);
-        ts.buildGraph();
+        List sortedList = ts.buildGraphAndSort();
+        System.out.println(sortedList.size());
     }
 }
 /* KHANS ALGO
